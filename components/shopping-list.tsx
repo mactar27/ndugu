@@ -283,6 +283,21 @@ export function ShoppingList() {
           </div>
         )}
       </main>
+
+      {/* Footer / Signature */}
+      <footer className="mt-auto py-8 text-center">
+        <p className="text-muted-foreground font-medium">
+          réalisé par{" "}
+          <a
+            href="https://www.wockytech.xyz/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline font-bold"
+          >
+            wockytech
+          </a>
+        </p>
+      </footer>
     </div>
   )
 }
