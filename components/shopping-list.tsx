@@ -71,25 +71,21 @@ export function ShoppingList() {
   }
 
   const updateQuantity = (id: string, delta: number) => {
-    setItems((prev) => {
-      const item = prev.find((i) => i.id === id)
-      if (!item) return prev
-
-      if (item.quantity === 1 && delta === -1) {
-        // Haptic feedback
-        if (typeof window !== "undefined" && window.navigator.vibrate) {
-          window.navigator.vibrate(50)
-        }
-        // Confirmation or direct delete with visual feedback
-        return prev.filter((i) => i.id !== id)
-      }
-
-      return prev.map((item) =>
+    setItems((prev) =>
+      prev.map((item) =>
         item.id === id
           ? { ...item, quantity: Math.max(1, item.quantity + delta) }
           : item
       )
-    })
+    )
+  }
+
+  const removeItem = (id: string) => {
+    // Haptic feedback
+    if (typeof window !== "undefined" && window.navigator.vibrate) {
+      window.navigator.vibrate(50)
+    }
+    setItems((prev) => prev.filter((item) => item.id !== id))
   }
 
   const clearAll = () => {
@@ -260,17 +256,14 @@ export function ShoppingList() {
                                 <div className="flex items-center gap-1">
                                   <button
                                     onClick={() => updateQuantity(item.id, -1)}
+                                    disabled={item.quantity <= 1}
                                     className={`w-12 h-12 rounded-xl border-3 flex items-center justify-center transition-colors ${
-                                      item.quantity === 1 
-                                        ? "bg-destructive/10 border-destructive text-destructive" 
+                                      item.quantity <= 1
+                                        ? "bg-muted border-muted text-muted-foreground"
                                         : "bg-white border-border text-foreground"
                                     }`}
                                   >
-                                    {item.quantity === 1 ? (
-                                      <Trash2 className="w-6 h-6" strokeWidth={3} />
-                                    ) : (
-                                      <Minus className="w-6 h-6" strokeWidth={3} />
-                                    )}
+                                    <Minus className="w-6 h-6" strokeWidth={3} />
                                   </button>
                                   <span className="w-12 text-center text-2xl font-black text-foreground">
                                     {item.quantity}
@@ -285,6 +278,12 @@ export function ShoppingList() {
                               </div>
                             )}
                           </div>
+                          <button
+                            onClick={() => removeItem(item.id)}
+                            className="w-12 h-12 rounded-xl border-3 border-destructive bg-destructive/10 text-destructive flex items-center justify-center shrink-0 hover:bg-destructive hover:text-white transition-colors"
+                          >
+                            <Trash2 className="w-6 h-6" strokeWidth={3} />
+                          </button>
                           {item.checked && (
                             <span className="text-success font-bold text-xl shrink-0 bg-success/10 w-12 h-12 flex items-center justify-center rounded-full border-2 border-success">
                               {item.quantity}
