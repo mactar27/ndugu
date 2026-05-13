@@ -298,32 +298,6 @@ export function ShoppingList() {
             })}
           </div>
         )}
-
-        {/* Action buttons */}
-        {items.length > 0 && (
-          <div className="mt-8 flex flex-col gap-4">
-            {checkedCount > 0 && (
-              <Button
-                onClick={clearChecked}
-                variant="outline"
-                size="lg"
-                className="w-full h-16 text-xl border-3 font-semibold"
-              >
-                <Trash2 className="w-6 h-6 mr-3" />
-                Supprimer achetés ({checkedCount})
-              </Button>
-            )}
-            <Button
-              onClick={clearAll}
-              variant="destructive"
-              size="lg"
-              className="w-full h-16 text-xl font-semibold"
-            >
-              <Trash2 className="w-6 h-6 mr-3" />
-              Tout effacer
-            </Button>
-          </div>
-        )}
       </main>
 
       {/* Footer / Signature */}
