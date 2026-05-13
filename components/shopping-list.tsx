@@ -15,19 +15,16 @@ interface ShoppingItem {
 }
 
 const CATEGORIES = [
-  { id: "fruits", name: "Fruits & Légumes", icon: "🍎", color: "bg-orange-100 text-orange-600 border-orange-200" },
-  { id: "viande", name: "Viandes & Poissons", icon: "🥩", color: "bg-red-100 text-red-600 border-red-200" },
-  { id: "lait", name: "Produits Laitiers", icon: "🧀", color: "bg-blue-100 text-blue-600 border-blue-200" },
-  { id: "epicerie", name: "Épicerie", icon: "🍞", color: "bg-amber-100 text-amber-600 border-amber-200" },
-  { id: "boissons", name: "Boissons", icon: "🧃", color: "bg-cyan-100 text-cyan-600 border-cyan-200" },
-  { id: "hygiene", name: "Hygiène & Maison", icon: "🧼", color: "bg-purple-100 text-purple-600 border-purple-200" },
-  { id: "autre", name: "Autre", icon: "📦", color: "bg-slate-100 text-slate-600 border-slate-200" },
+  { id: "alimentaire", name: "Alimentaire", icon: "🍎", color: "bg-orange-100 text-orange-600 border-orange-200" },
+  { id: "meubles", name: "Meubles", icon: "🪑", color: "bg-amber-100 text-amber-600 border-amber-200" },
+  { id: "hygiene", name: "Hygiène", icon: "🧼", color: "bg-purple-100 text-purple-600 border-purple-200" },
+  { id: "autre", name: "Autres", icon: "📦", color: "bg-slate-100 text-slate-600 border-slate-200" },
 ]
 
 export function ShoppingList() {
   const [items, setItems] = useState<ShoppingItem[]>([])
   const [newItem, setNewItem] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("autre")
+  const [selectedCategory, setSelectedCategory] = useState("alimentaire")
   const [isLoaded, setIsLoaded] = useState(false)
 
   // Load from localStorage on mount
@@ -138,7 +135,7 @@ export function ShoppingList() {
               />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">Ndugu</h1>
+              <h1 className="text-2xl font-bold text-foreground">Liste d'achats</h1>
               <p className="text-base text-muted-foreground font-medium">
                 {uncheckedCount > 0
                   ? `${uncheckedCount} article${uncheckedCount > 1 ? "s" : ""} à prendre`
@@ -173,24 +170,24 @@ export function ShoppingList() {
               </Button>
             </div>
 
-            {/* Category Selector */}
-            <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+            {/* Category Dropdown */}
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full h-14 px-4 rounded-xl border-3 border-border bg-white text-lg font-bold text-foreground focus:border-primary outline-none appearance-none cursor-pointer"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='3'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 1rem center',
+                backgroundSize: '1.5rem'
+              }}
+            >
               {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl border-2 shrink-0 transition-all font-bold ${
-                    selectedCategory === cat.id
-                      ? "bg-primary border-primary text-primary-foreground shadow-md scale-105"
-                      : "bg-white border-border text-muted-foreground hover:border-primary/50"
-                  }`}
-                >
-                  <span className="text-xl">{cat.icon}</span>
-                  <span className="text-sm whitespace-nowrap">{cat.name}</span>
-                </button>
+                <option key={cat.id} value={cat.id}>
+                  {cat.icon} {cat.name}
+                </option>
               ))}
-            </div>
+            </select>
           </form>
         </div>
       </header>
